@@ -8,7 +8,7 @@ public class Main {
     System.out.println("Logs from your program will appear here!");
 
     //  Uncomment the code below to pass the first stage
-      ServerSocket serverSocket = null;
+      ServerSocket serverSocket;
       Socket clientSocket = null;
       int port = 6379;
        try {
@@ -18,6 +18,7 @@ public class Main {
          serverSocket.setReuseAddress(true);
          // Wait for connection from client.
          clientSocket = serverSocket.accept();
+         clientSocket.getOutputStream().write("+PONG\r\n".getBytes());
        } catch (IOException e) {
          System.out.println("IOException: " + e.getMessage());
        } finally {
