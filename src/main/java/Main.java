@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -10,6 +9,7 @@ public class Main {
 
     //  Uncomment the code below to pass the first stage
       ServerSocket serverSocket = null;
+      Socket clientSocket = null;
       
       int port = 6379;
        try {
@@ -19,19 +19,20 @@ public class Main {
          serverSocket.setReuseAddress(true);
          // Wait for connection from client.
          while(true){
-        
-         Socket clientSocket = serverSocket.accept(); 
+        clientSocket = serverSocket.accept();
+        Socket currentClient = clientSocket; 
          Thread thread = new Thread (() -> {
           try{
-          clientSocket.getOutputStream().write("+PONG\r\n".getBytes());
+          currentClient.getOutputStream().write("+PONG\r\n".getBytes());
          }
          catch (IOException e)
          {
           System.out.println("IOException: "+e.getMessage());
          }
-         thread.start();
-         });
          
+         });
+         thread.start();
+         } 
          
        } catch (IOException e) {
          System.out.println("IOException: " + e.getMessage());
@@ -43,7 +44,7 @@ public class Main {
          } catch (IOException e) {
            System.out.println("IOException: " + e.getMessage());
          }
-       }
+       
   }
 }
 }
