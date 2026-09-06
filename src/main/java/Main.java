@@ -10,7 +10,7 @@ public class Main {
 
     //  Uncomment the code below to pass the first stage
       ServerSocket serverSocket = null;
-      Socket clientSocket = null;
+      
       int port = 6379;
        try {
          serverSocket = new ServerSocket(port);
@@ -19,18 +19,19 @@ public class Main {
          serverSocket.setReuseAddress(true);
          // Wait for connection from client.
          while(true){
-        try{
-         Socket clientSocket = serverSocket.accept();
+        
+         Socket clientSocket = serverSocket.accept(); 
          Thread thread = new Thread (() -> {
+          try{
           clientSocket.getOutputStream().write("+PONG\r\n".getBytes());
-         })
-         thread.start();
          }
          catch (IOException e)
          {
           System.out.println("IOException: "+e.getMessage());
          }
-         }
+         thread.start();
+         });
+         
          
        } catch (IOException e) {
          System.out.println("IOException: " + e.getMessage());
@@ -44,4 +45,5 @@ public class Main {
          }
        }
   }
+}
 }
