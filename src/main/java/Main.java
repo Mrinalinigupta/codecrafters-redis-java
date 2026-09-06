@@ -1,6 +1,5 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -27,9 +26,10 @@ public class Main {
         Socket currentClient = clientSocket; 
          Thread thread = new Thread (() -> {
           try{
-            BufferedReader reader = new BufferedReader(new InputStreamReader(currentClient.getInputStream()));
-            String line;
-            while((line = reader.readLine()) != null) {
+            InputStream input = currentClient.getInputStream();
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while((bytesRead = input.read(buffer)) != -1) {
               currentClient.getOutputStream().write("+PONG\r\n".getBytes());
               currentClient.getOutputStream().flush();
             }
