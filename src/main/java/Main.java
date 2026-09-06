@@ -23,8 +23,11 @@ public class Main {
         Socket currentClient = clientSocket; 
          Thread thread = new Thread (() -> {
           try{
-          currentClient.getOutputStream().write("+PONG\r\n".getBytes());
+            while(true){   
+            currentClient.getInputStream().read();     
+            currentClient.getOutputStream().write("+PONG\r\n".getBytes());
          }
+        }
          catch (IOException e)
          {
           System.out.println("IOException: "+e.getMessage());
