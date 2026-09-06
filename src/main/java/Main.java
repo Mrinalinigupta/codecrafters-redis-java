@@ -1,6 +1,10 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+
 
 public class Main {
   public static void main(String[] args){
@@ -24,16 +28,23 @@ public class Main {
          Thread thread = new Thread (() -> {
           try{
             while(true){   
-            currentClient.getInputStream().read();     
-            currentClient.getOutputStream().write("+PONG\r\n".getBytes());
+            BufferedReader reader = new BufferedReader(new InputStreamReader(currentClient.getInputStream()));
+            String line;
+            while((line = reader.readLine()) != null) {
+              currentClient.getOutputStream().write("+PONG\r\n".getBytes());
+              currentClient.getOutputStream().flush();
+            }
          }
         }
          catch (IOException e)
          {
           System.out.println("IOException: "+e.getMessage());
          }
+         finally {
+           try { currentClient.close(); } catch (IOException e) {}
+         }
          
-         });
+  });
          thread.start();
          } 
          
