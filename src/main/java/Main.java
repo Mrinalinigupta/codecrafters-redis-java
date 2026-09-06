@@ -27,14 +27,12 @@ public class Main {
         Socket currentClient = clientSocket; 
          Thread thread = new Thread (() -> {
           try{
-            while(true){   
             BufferedReader reader = new BufferedReader(new InputStreamReader(currentClient.getInputStream()));
             String line;
             while((line = reader.readLine()) != null) {
               currentClient.getOutputStream().write("+PONG\r\n".getBytes());
               currentClient.getOutputStream().flush();
             }
-         }
         }
          catch (IOException e)
          {
@@ -44,7 +42,7 @@ public class Main {
            try { currentClient.close(); } catch (IOException e) {}
          }
          
-  });
+        });
          thread.start();
          } 
          
