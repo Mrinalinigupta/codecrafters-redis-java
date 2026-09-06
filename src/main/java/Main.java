@@ -18,13 +18,20 @@ public class Main {
          // ensures that we don't run into 'Address already in use' errors
          serverSocket.setReuseAddress(true);
          // Wait for connection from client.
-         clientSocket = serverSocket.accept();
-         InputStream inputStream = clientSocket.getInputStream();
-         byte[] buffer = new byte[1024];
-         int bytesRead;
-         while((bytesRead = inputStream.read(buffer))!= -1) {
+         while(true){
+        try{
+         Socket clientSocket = serverSocket.accept();
+         Thread thread = new Thread (() -> {
           clientSocket.getOutputStream().write("+PONG\r\n".getBytes());
+         })
+         thread.start();
          }
+         catch (IOException e)
+         {
+          System.out.println("IOException: "+e.getMessage());
+         }
+         }
+         
        } catch (IOException e) {
          System.out.println("IOException: " + e.getMessage());
        } finally {
